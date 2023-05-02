@@ -1,5 +1,6 @@
 import React from "react";
 //import memeData from "./memesData";
+import html2canvas from "html2canvas";
 
 export default function Form() {
   const [allMemeData, setMemeAllImages] = React.useState({});
@@ -35,6 +36,22 @@ export default function Form() {
       });
     }
   }
+  const capture = () => {
+    const divToDisplay = document.getElementById("meme");
+    html2canvas(divToDisplay, {
+      allowTaint: true,
+      useCORS: true,
+      scrollY: -window.scrollY,
+      scrollX: -window.scrollX,
+    }).then(function (canvas) {
+      var url = canvas.toDataURL("image/png");
+      var link = document.createElement("a");
+      link.download = "meme.png";
+      link.href = url;
+      link.click();
+    });
+  }
+
   function handleClick() {
     const memesArray = allMemeData.data.memes;
     const randomIndex = Math.floor(Math.random() * memesArray.length);
@@ -86,9 +103,10 @@ export default function Form() {
             className="file"
             onChange={imghandle}
           />
+          {meme.randomImage && <button className="btn" id="capture" onClick={capture}>Download meme</button> }
         </div>
       </div>
-      <div className="meme" style={{ display: imgState ? "block" : "none" }}>
+      <div id="meme" className="meme" style={{ display: imgState ? "block" : "none" }}>
         <img src={meme.randomImage} className="meme--img" alt="meme" />
         <h2 className="meme--text top">{meme.topText}</h2>
         <h2 className="meme--text bottom">{meme.bottomText}</h2>
