@@ -101,6 +101,7 @@ export default function Form() {
             type="file"
             name="uploadedImage"
             className="file"
+            accept="image/*"
             onChange={imghandle}
           />
           {meme.randomImage && <button className="btn" id="capture" onClick={capture}>Download meme</button> }
